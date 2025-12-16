@@ -2,7 +2,7 @@
 
 <div align="center">
 
-<img src="https://raw.githubusercontent.com/Pal-cloud/cat_api/main/public/api_cats.png" alt="Banner API Cats" width="200" height="auto">
+<img src="https://raw.githubusercontent.com/Pal-cloud/cat_api/main/public/api_cats.png" alt="Banner API Cats" width="400" height="150" style="object-fit: cover;">
 
 **Una API REST completa y personalizada para explorar las razas de gatos más populares del mundo** 🌍
 
