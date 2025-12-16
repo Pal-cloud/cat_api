@@ -68,8 +68,9 @@ Tu API viene **precargada** con 4 razas fascinantes:
 GET    /                           # Información de la API
 GET    /razas                      # Todas las razas
 POST   /razas                      # Agregar nueva raza
-PUT    /razas/{id}                 # Actualizar raza
-DELETE /razas/{id}                 # Eliminar raza
+GET    /razas/{nombre}             # Obtener raza por nombre
+PUT    /razas/{nombre}             # Actualizar raza por nombre
+DELETE /razas/{nombre}             # Eliminar raza por nombre
 GET    /razas/populares            # Razas populares (≥7)
 GET    /razas/tamano/{tamaño}      # Filtrar por tamaño
 GET    /razas/origen/{país}        # Filtrar por origen
@@ -97,6 +98,11 @@ GET    /estadisticas               # Métricas generales
 curl http://127.0.0.1:5000/razas
 ```
 
+### **Ver una raza específica:**
+```bash
+curl http://127.0.0.1:5000/razas/calico
+```
+
 ### **Agregar una nueva raza:**
 ```bash
 curl -X POST http://127.0.0.1:5000/razas \
@@ -106,6 +112,16 @@ curl -X POST http://127.0.0.1:5000/razas \
     "origen": "Reino Unido",
     "popularidad": 8,
     "tamaño": "mediano"
+  }'
+```
+
+### **Actualizar una raza:**
+```bash
+curl -X PUT http://127.0.0.1:5000/razas/british-shorthair \
+  -H "Content-Type: application/json" \
+  -d '{
+    "popularidad": 9,
+    "descripcion": "Gato robusto y cariñoso"
   }'
 ```
 
@@ -130,24 +146,7 @@ curl http://127.0.0.1:5000/estadisticas
 'imagen_url': datos.get('imagen_url', '')
 ```
 
-### 🎯 **Nuevos endpoints especializados:**
-```python
-# Razas perfectas para apartamentos
-@app.route('/razas/apartamento', methods=['GET'])
-def razas_apartamento():
-    return [r for r in razas_gatos 
-            if r['tamaño'] in ['pequeño', 'mediano'] 
-            and 'tranquilo' in r['temperamento']]
-
-# Razas ideales para familias con niños  
-@app.route('/razas/familia', methods=['GET'])
-def razas_familia():
-    return [r for r in razas_gatos 
-            if 'amigable' in r['temperamento'] 
-            or 'sociable' in r['temperamento']]
-```
-
-### 🌍 **Cambiar el tema completamente:**
+###  **Cambiar el tema completamente:**
 - **🌿 API de Plantas** - Especies, cuidados, estaciones
 - **📚 API de Libros** - Tu biblioteca personal
 - **🍳 API de Recetas** - Ingredientes, dificultad, tiempo
