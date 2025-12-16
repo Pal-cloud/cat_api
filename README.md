@@ -15,13 +15,28 @@
 
 ---
 
+## 🐱 **Gatos Incluidos**
+
+Tu API viene **precargada** con 4 adorables gatos:
+
+| 🐾 Nombre | 🎭 Raza | 🌍 Origen | ⭐ Popularidad | 📏 Tamaño | 🎨 Temperamento |
+|-----------|---------|-----------|----------------|-----------|-----------------|
+| **Bambú** | Calico | 🌍 Mundial | 8/10 | Mediano | Independiente, Cariñoso |
+| **Peter** | Snowshoe | 🇺🇸 Estados Unidos | 7/10 | Mediano | Dulce, Vocal |
+| **Alma** | Vaca | 🌍 Mundial | 9/10 | Mediano | Amigable, Tranquilo |
+| **Felipa** | Atigrado Blanco | 🌍 Mundial | 10/10 | Mediano | Independiente, Cazador |
+
+</div>
+
+---
+
 ## 🚀 **Inicio Rápido**
 
 ### ⚡ **1 minuto para empezar:**
 
 ```bash
 # 1. Clona o descarga el proyecto
-git clone https://github.com/Pal-cloud/cat_api.git
+git clone https://github.com/Pal-cloud/cat_api
 
 # 2. Instala dependencias
 pip install flask requests
@@ -66,12 +81,12 @@ Tu API viene **precargada** con 4 razas fascinantes:
 
 ```http
 GET    /                           # Información de la API
-GET    /razas                      # Todas las razas
-POST   /razas                      # Agregar nueva raza
-GET    /razas/{nombre}             # Obtener raza por nombre
-PUT    /razas/{nombre}             # Actualizar raza por nombre
-DELETE /razas/{nombre}             # Eliminar raza por nombre
-GET    /razas/populares            # Razas populares (≥7)
+GET    /razas                      # Todos los gatos
+POST   /razas                      # Agregar nuevo gato
+GET    /razas/{nombre}             # Obtener gato por nombre
+PUT    /razas/{nombre}             # Actualizar gato por nombre
+DELETE /razas/{nombre}             # Eliminar gato por nombre
+GET    /razas/populares            # Gatos populares (≥7)
 GET    /razas/tamano/{tamaño}      # Filtrar por tamaño
 GET    /razas/origen/{país}        # Filtrar por origen
 GET    /estadisticas               # Métricas generales
@@ -93,35 +108,36 @@ GET    /estadisticas               # Métricas generales
 
 ## 🎯 **Ejemplos de Uso**
 
-### **Ver todas las razas:**
+### **Ver todos los gatos:**
 ```bash
 curl http://127.0.0.1:5000/razas
 ```
 
-### **Ver una raza específica:**
+### **Ver un gato específico:**
 ```bash
-curl http://127.0.0.1:5000/razas/calico
+curl http://127.0.0.1:5000/razas/Bambú
 ```
 
-### **Agregar una nueva raza:**
+### **Agregar un nuevo gato:**
 ```bash
 curl -X POST http://127.0.0.1:5000/razas \
   -H "Content-Type: application/json" \
   -d '{
-    "nombre": "British Shorthair",
+    "nombre": "Mimi",
+    "raza": "British Shorthair", 
     "origen": "Reino Unido",
     "popularidad": 8,
     "tamaño": "mediano"
   }'
 ```
 
-### **Actualizar una raza:**
+### **Actualizar un gato:**
 ```bash
-curl -X PUT http://127.0.0.1:5000/razas/british-shorthair \
+curl -X PUT http://127.0.0.1:5000/razas/Peter \
   -H "Content-Type: application/json" \
   -d '{
     "popularidad": 9,
-    "descripcion": "Gato robusto y cariñoso"
+    "descripcion": "Gato muy cariñoso y sociable"
   }'
 ```
 

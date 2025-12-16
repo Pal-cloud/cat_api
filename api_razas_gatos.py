@@ -59,16 +59,16 @@ def encontrar_raza(identificador):
 @app.route('/', methods=['GET'])
 def home():
     return jsonify_utf8({
-        'mensaje': '🐱 API de Razas de Gatos del Mundo',
+        'mensaje': '🐱 API de Gatos del Mundo',
         'version': '1.0.0',
-        'descripción': 'Descubre las características de diferentes razas felinas',
+        'descripción': 'Descubre los gatos más adorables y sus razas',
         'endpoints': {
-            'GET /razas': 'Obtener todas las razas',
-            'POST /razas': 'Agregar nueva raza',
-            'GET /razas/<nombre>': 'Obtener raza por nombre',
-            'PUT /razas/<nombre>': 'Actualizar raza por nombre',
-            'DELETE /razas/<nombre>': 'Eliminar raza por nombre',
-            'GET /razas/populares': 'Ver razas más populares',
+            'GET /razas': 'Obtener todos los gatos',
+            'POST /razas': 'Agregar nuevo gato',
+            'GET /razas/<nombre>': 'Obtener gato por nombre',
+            'PUT /razas/<nombre>': 'Actualizar gato por nombre',
+            'DELETE /razas/<nombre>': 'Eliminar gato por nombre',
+            'GET /razas/populares': 'Ver gatos más populares',
             'GET /razas/tamano/<tamano>': 'Filtrar por tamaño (pequeño/mediano/grande)',
             'GET /razas/origen/<país>': 'Filtrar por país de origen',
             'GET /estadísticas': 'Estadísticas generales'
@@ -79,18 +79,18 @@ def home():
 @app.route('/razas', methods=['GET'])
 def obtener_razas():
     return jsonify_utf8({
-        'total_razas': len(razas_gatos),
-        'razas': razas_gatos
+        'total_gatos': len(razas_gatos),
+        'gatos': razas_gatos
     }), 200
 
-# 🌟 GET - Razas más populares (DEBE IR ANTES DE LA RUTA DINÁMICA)
+# 🌟 GET - Gatos más populares (DEBE IR ANTES DE LA RUTA DINÁMICA)
 @app.route('/razas/populares', methods=['GET'])
 def razas_populares():
     populares = sorted([r for r in razas_gatos if r['popularidad'] >= 7], 
                       key=lambda x: x['popularidad'], reverse=True)
     return jsonify_utf8({
         'total_populares': len(populares),
-        'razas': populares
+        'gatos': populares
     }), 200
 
 # � GET - Razas por tamaño (DEBE IR ANTES DE LA RUTA DINÁMICA)
@@ -106,8 +106,8 @@ def razas_por_tamano(tamano):
     filtradas = [r for r in razas_gatos if r['tamaño'] == tamano_real]
     return jsonify_utf8({
         'tamano_buscado': tamano_real,
-        'total_encontradas': len(filtradas),
-        'razas': filtradas
+        'total_encontrados': len(filtradas),
+        'gatos': filtradas
     }), 200
 
 # 🌍 GET - Razas por origen (DEBE IR ANTES DE LA RUTA DINÁMICA)  
@@ -116,8 +116,8 @@ def razas_por_origen(pais):
     filtradas = [r for r in razas_gatos if pais.lower() in r['origen'].lower()]
     return jsonify_utf8({
         'pais_buscado': pais,
-        'total_encontradas': len(filtradas),
-        'razas': filtradas
+        'total_encontrados': len(filtradas),
+        'gatos': filtradas
     }), 200
 
 # �🔍 GET - Obtener una raza específica por nombre/ID (RUTA DINÁMICA AL FINAL)
@@ -125,7 +125,7 @@ def razas_por_origen(pais):
 def obtener_raza(raza_id):
     raza = encontrar_raza(raza_id)
     if not raza:
-        return jsonify_utf8({'error': 'Raza no encontrada'}), 404
+        return jsonify_utf8({'error': 'Gato no encontrado'}), 404
     
     return jsonify_utf8(raza), 200
 
@@ -136,11 +136,16 @@ def crear_raza():
     
     # Validación básica
     if not datos or 'nombre' not in datos:
-        return jsonify_utf8({'error': 'El nombre de la raza es obligatorio'}), 400
+        return jsonify_utf8({'error': 'El nombre del gato es obligatorio'}), 400
+    
+    # Verificar si ya existe un gato con ese nombre
+    if encontrar_raza(datos['nombre']):
+        return jsonify_utf8({'error': 'Ya existe un gato con ese nombre'}), 409
     
     nueva_raza = {
-        'id': nombre_to_id(datos['nombre']),
+        'id': datos['nombre'],  # El ID es el nombre del gato
         'nombre': datos['nombre'],
+        'raza': datos.get('raza', 'Mestizo'),  # Raza del gato
         'origen': datos.get('origen', 'Desconocido'),
         'descripcion': datos.get('descripcion', ''),
         'temperamento': datos.get('temperamento', []),
@@ -154,8 +159,8 @@ def crear_raza():
     
     razas_gatos.append(nueva_raza)
     return jsonify_utf8({
-        'mensaje': '✅ Raza de gato agregada exitosamente',
-        'raza': nueva_raza
+        'mensaje': '✅ Gato agregado exitosamente',
+        'gato': nueva_raza
     }), 201
 
 # ✏️ PUT - Actualizar información de raza
@@ -163,16 +168,21 @@ def crear_raza():
 def actualizar_raza(raza_id):
     datos = request.get_json()
     
-    # Buscar la raza usando la nueva función
+    # Buscar el gato usando la nueva función
     raza = encontrar_raza(raza_id)
     if not raza:
-        return jsonify_utf8({'error': 'Raza no encontrada'}), 404
+        return jsonify_utf8({'error': 'Gato no encontrado'}), 404
     
     # Actualizar campos
     if 'nombre' in datos:
+        # Si se cambia el nombre, verificar que no existe otro gato con ese nombre
+        if datos['nombre'] != raza['nombre'] and encontrar_raza(datos['nombre']):
+            return jsonify_utf8({'error': 'Ya existe otro gato con ese nombre'}), 409
         raza['nombre'] = datos['nombre']
-        # Actualizar también el ID si cambió el nombre
-        raza['id'] = nombre_to_id(datos['nombre'])
+        # Actualizar también el ID
+        raza['id'] = datos['nombre']
+    
+    raza['raza'] = datos.get('raza', raza.get('raza', 'Mestizo'))
     raza['origen'] = datos.get('origen', raza['origen'])
     raza['descripcion'] = datos.get('descripcion', raza['descripcion'])
     raza['temperamento'] = datos.get('temperamento', raza['temperamento'])
@@ -183,8 +193,8 @@ def actualizar_raza(raza_id):
     raza['colores_comunes'] = datos.get('colores_comunes', raza['colores_comunes'])
     
     return jsonify_utf8({
-        'mensaje': '📝 Información de raza actualizada',
-        'raza': raza
+        'mensaje': '📝 Información del gato actualizada',
+        'gato': raza
     }), 200
 
 # 🗑️ DELETE - Eliminar raza
@@ -192,17 +202,17 @@ def actualizar_raza(raza_id):
 def eliminar_raza(raza_id):
     global razas_gatos
     
-    # Buscar la raza usando la nueva función
+    # Buscar el gato usando la nueva función
     raza = encontrar_raza(raza_id)
     if not raza:
-        return jsonify_utf8({'error': 'Raza no encontrada'}), 404
+        return jsonify_utf8({'error': 'Gato no encontrado'}), 404
     
-    # Eliminar la raza
+    # Eliminar el gato
     razas_gatos = [r for r in razas_gatos if r['id'] != raza['id']]
     
     return jsonify_utf8({
-        'mensaje': '🗑️ Raza eliminada',
-        'raza_eliminada': raza
+        'mensaje': '🗑️ Gato eliminado',
+        'gato_eliminado': raza
     }), 200
 
 # 📊 GET - Estadísticas generales
@@ -212,8 +222,8 @@ def estadisticas():
     
     if total == 0:
         return jsonify_utf8({
-            'mensaje': 'No hay razas registradas aún',
-            'total_razas': 0
+            'mensaje': 'No hay gatos registrados aún',
+            'total_gatos': 0
         }), 200
     
     # Estadísticas por tamaño
@@ -232,9 +242,9 @@ def estadisticas():
     
     return jsonify_utf8({
         'resumen': {
-            'total_razas': total,
+            'total_gatos': total,
             'popularidad_promedio': round(popularidad_promedio, 1),
-            'razas_muy_populares': len([r for r in razas_gatos if r['popularidad'] >= 8])
+            'gatos_muy_populares': len([r for r in razas_gatos if r['popularidad'] >= 8])
         },
         'por_tamaño': tamaños,
         'top_paises_origen': dict(sorted(paises.items(), key=lambda x: x[1], reverse=True)[:5])
@@ -244,8 +254,9 @@ if __name__ == '__main__':
     # Agregar 4 razas de gatos de ejemplo
     razas_gatos.extend([
         {
-            'id': 'calico',
-            'nombre': 'Gato Calicó (Tricolor)',
+            'id': 'Bambú',
+            'nombre': 'Bambú',
+            'raza': 'Calico',
             'origen': 'Mundial',
             'descripcion': 'Gato caracterizado por su pelaje de tres colores: negro, naranja y blanco. Casi siempre son hembras debido a la genética ligada al cromosoma X.',
             'temperamento': ['independiente', 'cariñoso', 'inteligente', 'juguetón'],
@@ -257,8 +268,9 @@ if __name__ == '__main__':
             'fecha_agregada': datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         },
         {
-            'id': 'snowshoe',
-            'nombre': 'Gato Snowshoe',
+            'id': 'Peter',
+            'nombre': 'Peter',
+            'raza': 'Snowshoe',
             'origen': 'Estados Unidos',
             'descripcion': 'Raza híbrida entre Siamés y Americano de Pelo Corto. Conocido por sus distintivas "botas" blancas en las patas.',
             'temperamento': ['dulce', 'vocal', 'sociable', 'activo'],
@@ -270,8 +282,9 @@ if __name__ == '__main__':
             'fecha_agregada': datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         },
         {
-            'id': 'vaca',
-            'nombre': 'Gato Vaca (Bicolor Negro y Blanco)',
+            'id': 'Alma',
+            'nombre': 'Alma',
+            'raza': 'Vaca',
             'origen': 'Mundial',
             'descripcion': 'Gato con patrón bicolor distintivo de manchas negras y blancas que recuerda a las vacas Holstein. Muy común en gatos domésticos.',
             'temperamento': ['amigable', 'tranquilo', 'adaptable', 'cariñoso'],
@@ -283,8 +296,9 @@ if __name__ == '__main__':
             'fecha_agregada': datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         },
         {
-            'id': 'atigrado',
-            'nombre': 'Gato Común Atigrado y Blanco',
+            'id': 'Felipa',
+            'nombre': 'Felipa',
+            'raza': 'Atigrado Blanco',
             'origen': 'Mundial',
             'descripcion': 'El gato doméstico más común, con rayas atigradas (tabby) y marcas blancas. Excelente cazador y muy adaptable.',
             'temperamento': ['independiente', 'cazador', 'adaptable', 'inteligente'],
@@ -297,7 +311,7 @@ if __name__ == '__main__':
         }
     ])
     
-    print("🐱 Iniciando API de Razas de Gatos...")
+    print("🐱 Iniciando API de Gatos del Mundo...")
     print("📍 Disponible en: http://127.0.0.1:5000")
-    print("🌟 Razas precargadas:", len(razas_gatos))
+    print("🌟 Gatos precargados:", len(razas_gatos))
     app.run(debug=True, host='0.0.0.0', port=5000)
