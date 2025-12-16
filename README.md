@@ -2,7 +2,7 @@
 
 <div align="center">
 
-![Banner API Cats](public/api_cats.png)
+![Banner API Cats](https://raw.githubusercontent.com/Pal-cloud/cat_api/main/public/api_cats.png)
 
 **Una API REST completa y personalizada para explorar las razas de gatos más populares del mundo** 🌍
 
@@ -21,7 +21,7 @@
 
 ```bash
 # 1. Clona o descarga el proyecto
-git clone [your-repository]/cat_api
+git clone https://github.com/Pal-cloud/cat_api.git
 
 # 2. Instala dependencias
 pip install flask requests
@@ -199,10 +199,6 @@ python inicio_rapido.py
 ```
 
 ---
-
-## 📈 **Proyecto Educativo Original**
-
-enlace a la presentación https://gamma.app/docs/Introduccion-a-API-REST-y-CRUD-Fundamentos-Esenciales-4ofewad9ssvi17b
 
 ## ¿Qué es una API?
 
