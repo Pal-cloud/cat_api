@@ -1,9 +1,29 @@
-from flask import Flask, jsonify, request
+# -*- coding: utf-8 -*-
+from flask import Flask, request
 from datetime import datetime
 import uuid
+import json
 
 # Crear la aplicación Flask
 app = Flask(__name__)
+
+# Configurar para que soporte caracteres UTF-8
+app.config['JSON_AS_ASCII'] = False
+app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
+
+@app.after_request
+def after_request(response):
+    response.headers['Content-Type'] = 'application/json; charset=utf-8'
+    return response
+
+# Función personalizada para jsonify con UTF-8
+def jsonify_utf8(data, status_code=200):
+    response = app.response_class(
+        response=json.dumps(data, ensure_ascii=False, indent=2),
+        status=status_code,
+        mimetype='application/json; charset=utf-8'
+    )
+    return response
 
 # Base de datos en memoria (simulada) - Razas de gatos
 razas_gatos = []
@@ -11,26 +31,26 @@ razas_gatos = []
 # 🐱 Ruta principal
 @app.route('/', methods=['GET'])
 def home():
-    return jsonify({
+    return jsonify_utf8({
         'mensaje': '🐱 API de Razas de Gatos del Mundo',
         'version': '1.0.0',
-        'descripcion': 'Descubre las características de diferentes razas felinas',
+        'descripción': 'Descubre las características de diferentes razas felinas',
         'endpoints': {
             'GET /razas': 'Obtener todas las razas',
             'POST /razas': 'Agregar nueva raza',
             'PUT /razas/<id>': 'Actualizar información de raza',
             'DELETE /razas/<id>': 'Eliminar raza',
             'GET /razas/populares': 'Ver razas más populares',
-            'GET /razas/tamano/<tamano>': 'Filtrar por tamaño (pequeno/mediano/grande)',
-            'GET /razas/origen/<pais>': 'Filtrar por país de origen',
-            'GET /estadisticas': 'Estadísticas generales'
+            'GET /razas/tamano/<tamano>': 'Filtrar por tamaño (pequeño/mediano/grande)',
+            'GET /razas/origen/<país>': 'Filtrar por país de origen',
+            'GET /estadísticas': 'Estadísticas generales'
         }
     })
 
 # 🐾 GET - Obtener todas las razas
 @app.route('/razas', methods=['GET'])
 def obtener_razas():
-    return jsonify({
+    return jsonify_utf8({
         'total_razas': len(razas_gatos),
         'razas': razas_gatos
     }), 200
@@ -42,7 +62,7 @@ def crear_raza():
     
     # Validación básica
     if not datos or 'nombre' not in datos:
-        return jsonify({'error': 'El nombre de la raza es obligatorio'}), 400
+        return jsonify_utf8({'error': 'El nombre de la raza es obligatorio'}), 400
     
     nueva_raza = {
         'id': str(uuid.uuid4()),
@@ -59,7 +79,7 @@ def crear_raza():
     }
     
     razas_gatos.append(nueva_raza)
-    return jsonify({
+    return jsonify_utf8({
         'mensaje': '✅ Raza de gato agregada exitosamente',
         'raza': nueva_raza
     }), 201
@@ -72,7 +92,7 @@ def actualizar_raza(raza_id):
     # Buscar la raza
     raza = next((r for r in razas_gatos if r['id'] == raza_id), None)
     if not raza:
-        return jsonify({'error': 'Raza no encontrada'}), 404
+        return jsonify_utf8({'error': 'Raza no encontrada'}), 404
     
     # Actualizar campos
     raza['nombre'] = datos.get('nombre', raza['nombre'])
@@ -85,7 +105,7 @@ def actualizar_raza(raza_id):
     raza['popularidad'] = datos.get('popularidad', raza['popularidad'])
     raza['colores_comunes'] = datos.get('colores_comunes', raza['colores_comunes'])
     
-    return jsonify({
+    return jsonify_utf8({
         'mensaje': '📝 Información de raza actualizada',
         'raza': raza
     }), 200
@@ -98,11 +118,11 @@ def eliminar_raza(raza_id):
     # Buscar y eliminar la raza
     raza = next((r for r in razas_gatos if r['id'] == raza_id), None)
     if not raza:
-        return jsonify({'error': 'Raza no encontrada'}), 404
+        return jsonify_utf8({'error': 'Raza no encontrada'}), 404
     
     razas_gatos = [r for r in razas_gatos if r['id'] != raza_id]
     
-    return jsonify({
+    return jsonify_utf8({
         'mensaje': '🗑️ Raza eliminada',
         'raza_eliminada': raza
     }), 200
@@ -112,7 +132,7 @@ def eliminar_raza(raza_id):
 def razas_populares():
     populares = sorted([r for r in razas_gatos if r['popularidad'] >= 7], 
                       key=lambda x: x['popularidad'], reverse=True)
-    return jsonify({
+    return jsonify_utf8({
         'total_populares': len(populares),
         'razas': populares
     }), 200
@@ -121,14 +141,14 @@ def razas_populares():
 @app.route('/razas/tamano/<tamano>', methods=['GET'])
 def razas_por_tamano(tamano):
     if tamano not in ['pequeno', 'mediano', 'grande']:
-        return jsonify({'error': 'Tamaño debe ser: pequeno, mediano o grande'}), 400
+        return jsonify_utf8({'error': 'Tamaño debe ser: pequeno, mediano o grande'}), 400
     
     # Mapear nombres URL a nombres reales
     tamano_map = {'pequeno': 'pequeño', 'mediano': 'mediano', 'grande': 'grande'}
     tamano_real = tamano_map.get(tamano, tamano)
     
     filtradas = [r for r in razas_gatos if r['tamaño'] == tamano_real]
-    return jsonify({
+    return jsonify_utf8({
         f'razas_tamano_{tamano}': len(filtradas),
         'razas': filtradas
     }), 200
@@ -137,7 +157,7 @@ def razas_por_tamano(tamano):
 @app.route('/razas/origen/<pais>', methods=['GET'])
 def razas_por_origen(pais):
     filtradas = [r for r in razas_gatos if r['origen'].lower() == pais.lower()]
-    return jsonify({
+    return jsonify_utf8({
         f'razas_de_{pais}': len(filtradas),
         'razas': filtradas
     }), 200
@@ -148,7 +168,7 @@ def estadisticas():
     total = len(razas_gatos)
     
     if total == 0:
-        return jsonify({
+        return jsonify_utf8({
             'mensaje': 'No hay razas registradas aún',
             'total_razas': 0
         }), 200
@@ -167,7 +187,7 @@ def estadisticas():
     # Popularidad promedio
     popularidad_promedio = sum(r['popularidad'] for r in razas_gatos) / total
     
-    return jsonify({
+    return jsonify_utf8({
         'resumen': {
             'total_razas': total,
             'popularidad_promedio': round(popularidad_promedio, 1),
