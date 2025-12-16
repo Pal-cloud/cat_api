@@ -46,10 +46,10 @@ Tu API viene **precargada** con 4 razas fascinantes:
 
 | 🐾 Raza | 🌍 Origen | ⭐ Popularidad | 📏 Tamaño | 🎨 Temperamento |
 |---------|-----------|----------------|-----------|-----------------|
-| **Persa** | 🇮🇷 Irán | 9/10 | Mediano | Tranquilo, Dulce |
-| **Maine Coon** | 🇺🇸 Estados Unidos | 8/10 | Grande | Amigable, Sociable |
-| **Siamés** | 🇹🇭 Tailandia | 7/10 | Mediano | Vocal, Inteligente |
-| **Ragdoll** | 🇺🇸 Estados Unidos | 8/10 | Grande | Relajado, Dócil |
+| **Calicó (Tricolor)** | � Mundial | 8/10 | Mediano | Independiente, Cariñoso |
+| **Snowshoe** | 🇺🇸 Estados Unidos | 7/10 | Mediano | Dulce, Vocal |
+| **Vaca (Bicolor)** | � Mundial | 9/10 | Mediano | Amigable, Tranquilo |
+| **Común Atigrado** | � Mundial | 10/10 | Mediano | Independiente, Cazador |
 
 ---
 
