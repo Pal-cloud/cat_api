@@ -1,6 +1,207 @@
-# Pildora API Rest y CRUD
+# 🐱 Cat API - API REST de Razas de Gatos
 
-## Presentación
+<div align="center">
+
+![Banner API Cats](public/api_cats.png)
+
+**Una API REST completa y personalizada para explorar las razas de gatos más populares del mundo** 🌍
+
+[![Python](https://img.shields.io/badge/Python-3.7+-blue.svg)](https://www.python.org/)
+[![Flask](https://img.shields.io/badge/Flask-2.0+-green.svg)](https://flask.palletsprojects.com/)
+[![API](https://img.shields.io/badge/API-REST-orange.svg)](https://restfulapi.net/)
+[![Cats](https://img.shields.io/badge/🐱-Cat_API-purple.svg)](#-razas-incluidas)
+
+</div>
+
+---
+
+## 🚀 **Inicio Rápido**
+
+### ⚡ **1 minuto para empezar:**
+
+```bash
+# 1. Clona o descarga el proyecto
+git clone [your-repository]/cat_api
+
+# 2. Instala dependencias
+pip install flask requests
+
+# 3. ¡Inicia tu API!
+python api_razas_gatos.py
+```
+
+### 🌐 **Enlaces directos (una vez iniciada):**
+| 🔗 Endpoint | 📝 Descripción | 🌍 URL |
+|-------------|----------------|---------|
+| **🏠 Principal** | Información de la API | http://127.0.0.1:5000/ |
+| **🐾 Todas las razas** | Ver las 4 razas completas | http://127.0.0.1:5000/razas |
+| **📊 Estadísticas** | Datos y métricas | http://127.0.0.1:5000/estadisticas |
+| **⭐ Populares** | Razas más queridas | http://127.0.0.1:5000/razas/populares |
+
+---
+
+## 🐱 **Razas Incluidas**
+
+Tu API viene **precargada** con 4 razas fascinantes:
+
+| 🐾 Raza | 🌍 Origen | ⭐ Popularidad | 📏 Tamaño | 🎨 Temperamento |
+|---------|-----------|----------------|-----------|-----------------|
+| **Persa** | 🇮🇷 Irán | 9/10 | Mediano | Tranquilo, Dulce |
+| **Maine Coon** | 🇺🇸 Estados Unidos | 8/10 | Grande | Amigable, Sociable |
+| **Siamés** | 🇹🇭 Tailandia | 7/10 | Mediano | Vocal, Inteligente |
+| **Ragdoll** | 🇺🇸 Estados Unidos | 8/10 | Grande | Relajado, Dócil |
+
+---
+
+## 🛠️ **Características de la API**
+
+### ✨ **Funcionalidades completas:**
+- 🔍 **CRUD Completo** - Crear, Leer, Actualizar, Eliminar razas
+- 📊 **Filtros Avanzados** - Por tamaño, origen, popularidad
+- 📈 **Estadísticas** - Métricas automáticas y análisis
+- 🎯 **Búsquedas** - Por país de origen y características
+- ✅ **Validación** - Datos consistentes y seguros
+
+### 🔗 **Endpoints Disponibles:**
+
+```http
+GET    /                           # Información de la API
+GET    /razas                      # Todas las razas
+POST   /razas                      # Agregar nueva raza
+PUT    /razas/{id}                 # Actualizar raza
+DELETE /razas/{id}                 # Eliminar raza
+GET    /razas/populares            # Razas populares (≥7)
+GET    /razas/tamano/{tamaño}      # Filtrar por tamaño
+GET    /razas/origen/{país}        # Filtrar por origen
+GET    /estadisticas               # Métricas generales
+```
+
+---
+
+## 📚 **Archivos del Proyecto**
+
+| 📁 Archivo | 📝 Descripción |
+|------------|----------------|
+| **`api_razas_gatos.py`** | 🚀 API principal con todas las funciones |
+| **`test_api_razas_gatos.py`** | 🧪 Script de pruebas automáticas |
+| **`inicio_rapido.py`** | ⚡ Iniciador rápido con navegador |
+| **`requirements.txt`** | � Dependencias del proyecto |
+| **`public/api_cats.png`** | 🖼️ Banner e imagen del proyecto |
+
+---
+
+## 🎯 **Ejemplos de Uso**
+
+### **Ver todas las razas:**
+```bash
+curl http://127.0.0.1:5000/razas
+```
+
+### **Agregar una nueva raza:**
+```bash
+curl -X POST http://127.0.0.1:5000/razas \
+  -H "Content-Type: application/json" \
+  -d '{
+    "nombre": "British Shorthair",
+    "origen": "Reino Unido",
+    "popularidad": 8,
+    "tamaño": "mediano"
+  }'
+```
+
+### **Ver estadísticas:**
+```bash
+curl http://127.0.0.1:5000/estadisticas
+```
+
+---
+
+## 🎨 **Personalización Avanzada**
+
+¿Quieres llevar tu API al siguiente nivel? Aquí tienes ideas geniales:
+
+### 🔧 **Agregar más campos a las razas:**
+```python
+# En api_razas_gatos.py, función crear_raza():
+'energia': datos.get('energia', 5),          # 1-10
+'sociabilidad': datos.get('sociabilidad', 5),
+'nivel_ruido': datos.get('nivel_ruido', 5),
+'facilidad_cuidado': datos.get('facilidad_cuidado', 5),
+'imagen_url': datos.get('imagen_url', '')
+```
+
+### 🎯 **Nuevos endpoints especializados:**
+```python
+# Razas perfectas para apartamentos
+@app.route('/razas/apartamento', methods=['GET'])
+def razas_apartamento():
+    return [r for r in razas_gatos 
+            if r['tamaño'] in ['pequeño', 'mediano'] 
+            and 'tranquilo' in r['temperamento']]
+
+# Razas ideales para familias con niños  
+@app.route('/razas/familia', methods=['GET'])
+def razas_familia():
+    return [r for r in razas_gatos 
+            if 'amigable' in r['temperamento'] 
+            or 'sociable' in r['temperamento']]
+```
+
+### 🌍 **Cambiar el tema completamente:**
+- **🌿 API de Plantas** - Especies, cuidados, estaciones
+- **📚 API de Libros** - Tu biblioteca personal
+- **🍳 API de Recetas** - Ingredientes, dificultad, tiempo
+- **🏋️ API de Ejercicios** - Rutinas y seguimiento
+
+### 🗄️ **Upgrade a base de datos:**
+```python
+# Instalar: pip install sqlite3
+import sqlite3
+
+def crear_tabla():
+    conn = sqlite3.connect('razas_gatos.db')
+    cursor = conn.cursor()
+    cursor.execute('''
+        CREATE TABLE razas (
+            id TEXT PRIMARY KEY,
+            nombre TEXT NOT NULL,
+            origen TEXT,
+            descripcion TEXT,
+            popularidad INTEGER
+        )
+    ''')
+    conn.commit()
+    conn.close()
+```
+
+---
+
+## 🎨 **Personalización**
+
+¿Quieres adaptar la API a tu gusto? ¡Perfecto!
+
+- 🔧 **Agregar campos:** Edad, peso, cuidados específicos
+- 🌍 **Cambiar datos:** Otras mascotas, plantas, libros, etc.
+- 🎯 **Nuevas funciones:** Filtros, búsquedas, imágenes
+
+---
+
+## 🧪 **Pruebas**
+
+### **Pruebas automáticas:**
+```bash
+python test_api_razas_gatos.py
+```
+
+### **Inicio con navegador:**
+```bash
+python inicio_rapido.py
+```
+
+---
+
+## 📈 **Proyecto Educativo Original**
+
 enlace a la presentación https://gamma.app/docs/Introduccion-a-API-REST-y-CRUD-Fundamentos-Esenciales-4ofewad9ssvi17b
 
 ## ¿Qué es una API?
@@ -29,307 +230,85 @@ Cuando hablamos de API REST generalmente nos referimos a APIs que funcionan sobr
 
     • Recursos: Todo se modela como recursos (usuarios, productos, posts…).
 
-    • Uso de métodos HTTP: GET, POST, PUT, DELETE.
+    • Métodos HTTP: GET, POST, PUT, DELETE para operaciones.
 
-    • Respuestas en JSON.
+    • Representaciones: JSON, XML para transferir datos.
 
-## CRUD y su relación con REST
-📚 CRUD es un acrónimo que describe las 4 operaciones básicas sobre datos:
-| Operación | Acción  | Método HTTP |
-|-----------|---------|-------------|
-| Create | Crear | POST |
-| Read | Leer | GET |
-| Update | Actualizar | PUT/PATCH |
-| Delete | Eliminar | DELETE |
+## ¿Qué es CRUD?
 
-En una API REST, cada uno de estos métodos se aplica a un recurso.
-Ejemplo con recurso usuarios:
+✔ Definición CRUD
 
-    • GET /usuarios → obtener usuarios
+CRUD es un acrónimo para las operaciones básicas en bases de datos:
 
-    • POST /usuarios → crear usuario
+    • Create (Crear): Agregar nuevos datos.
 
-    • PUT /usuarios/1 → actualizar usuario con id=1
+    • Read (Leer): Obtener/consultar datos existentes.
 
-    • DELETE /usuarios/1 → borrar usuario con id=1
+    • Update (Actualizar): Modificar datos existentes.
 
+    • Delete (Eliminar): Borrar datos.
 
-## Taller práctico
+📌 Mapeo CRUD a HTTP
 
-### Cómo funciona api rest en python:
+    • CREATE → POST /recursos
 
-Una API REST en Python funciona mediante la comunicación del servidor y el cliente a través de peticiones HTTP. 
-Para crearla, se pueden usar frameworks como Flask o FastAPI, que permiten crear "endpoints" (rutas) y 
-asociarles funciones que manejan verbos HTTP como GET (para leer), POST (para crear), PUT (para actualizar) 
-y DELETE (para borrar). 
+    • READ → GET /recursos o GET /recursos/id
 
-Los datos generalmente se intercambian en formato JSON, y se utilizan bibliotecas como **requests** 
-para que otras aplicaciones en Python puedan interactuar con la API.
+    • UPDATE → PUT /recursos/id
 
-**En este taller vamos a usar el sitio JSON placeholder**
+    • DELETE → DELETE /recursos/id
 
-jsonplaceholder es una API gratuita que ofrece datos ficticios como fotos, 
-publicaciones, comentarios, datos de usuarios falsos y rutas para poder practicar.
+---
 
-sitio web : https://jsonplaceholder.typicode.com/
+## 🛠️ Configuración del Proyecto
 
-Por ejemplo para trabajar con los posts la URL es la siguiente : https://jsonplaceholder.typicode.com/posts
+### Requisitos
+- Python 3.7+
+- Flask 2.0+
 
-## Para realizar las pruebas podemos preparar un entorno virtual de python en la carpeta donde queramos hacer las pruebas o instalar request de manera global.
+### Instalación
+```bash
+pip install flask requests
+```
 
-Podemos crear la carpeta de nombre **api_rest**
+### Estructura del Proyecto
+```
+📁 pildora_api_rest_crud/
+├── 🐱 api_razas_gatos.py     # API principal
+├── 🧪 test_api_razas_gatos.py # Pruebas
+├── ⚡ inicio_rapido.py        # Inicio rápido
+├── � requirements.txt       # Dependencias
+├── 🖼️ public/api_cats.png     # Banner
+└── 📝 README.md              # Este archivo
+```
 
-Nos metemos en dicha carpeta y ejecutamos los siguientes comandos para crear elentorno virtual en python y activarlo.
+---
 
-    python -m venv venv
-    source venv/Scripts/activate
+## 🤝 **Contribuir**
 
-<u>**¿Cómo consumir una API?**</u>
+¡Las contribuciones son bienvenidas!
 
-Durante este taller vamos a ver algunos ejemplos sobre cómo consumir una API en Python con la ayuda de la librería **requests** de Python y la API gratuita de jsonplaceholder que proporciona datos simulados; para hacer las pruebas necesitamos instalar la librería 
-de requests en el ordenador, podemos instalarla con el siguiente comando:
+1. 🍴 Fork el proyecto
+2. 🌟 Crea una feature branch
+3. 💻 Realiza tus cambios
+4. 🧪 Ejecuta las pruebas
+5. 📤 Envía un pull request
 
-    pip install requests
+---
 
-Esta librería nos permite acceder a la información obtenida desde una API de una forma muy sencilla, 
-estos son algunos de los métodos y propiedades más comunes para acceder a la información que retornan las peticiones:
+## 📄 **Licencia**
 
-| Propiedad            | Descripción                                               |
-|----------------------|-----------------------------------------------------------|
-| response.status_code | Contiene el código de status de la petición, ejemplo: 201 |
-| response.url         | Contiene la URL de la petición.                           |
-| response.headers	   | Proporciona los headers de la petición.                   |
-| response.cookies	   | Proporciona las cookies de la petición.                   |
-| response.encoding	   | Contiene la codificación de la petición, ejemplo: utf-8.  |
-| response.json()	   | Guarda la información que viene desde la API, por ejemplo, en la API de los posts, devuelve una lista de diccionarios con la información de los posts. |
+Este proyecto es de uso educativo y está disponible bajo la licencia MIT.
 
-# Vamos a hacer algún ejemplo
+---
 
-> Nota importante : las peticiones a la API de jsonplaceholder sólo simulan el comportamiento de una API real, 
-no todas las peticiones son funcionales; por ejemplo, si hacemos una petición de tipo POST a la API de jsonplaceholder 
-la información NO se guardará en los servidores de la API pero la API te responde con un mensaje que simula que si.
+## 🎉 **¡Disfruta explorando el mundo felino con tu API!**
 
-<u>**¿Preparados para consumir una API en Python usando requests?**</u>
+<div align="center">
 
-En la programación actual es muy común hacer uso de una API para conectarse a servicios de terceros. 
-Por ejemplo, si estas creando una aplicación donde necesitas 
-mostrar el tiempo que hace, en vez de escribir todo el código necesario para eso, 
-puedes simplemente hacer uso de la API que muestre el tiempo.
+Made with ❤️ and 🐱
 
-En este taller vamos a ver cómo consumir una API en Python con ayuda de la librería **requests**.
+**⭐ ¡Dale una estrella a cat_api si te gusta el proyecto! ⭐**
 
-En el siguiente ejemplo veremos un caso sencillo de una petición GET a la API gratuita de jsonplaceholder.
-
-Debemos crear un fichero de python con la extensión **py**, por ejemplo jsonplaceholder.py
-
-Para poder hacer uso de la librería **requests** primero tenemos que importarla en nuestro archivo, 
-para eso debemos usar el siguiente comando:
-
-    import requests
- 
-Con el código de abajo vamos a hacer una petición GET de un usuario de ejemplo, en este caso el usuario 1.
-
-    URL = "https://jsonplaceholder.typicode.com/users/1"
-    response = requests.get(URL)
-
-    if response.status_code == 200:
-        print('Solicitud exitosa')
-        print('Data:', response.json())
-
-        print("------------------> ", response.json()['name'])
-        print("------------------> ", response.json().get('username'))
-        print("headers -> ", response.headers)
-        print("url -> ", response.url)
-
-    else:
-        print('Error en la solicitud, detalles:', response.text)
-
-En este ejemplo, hemos usado el método get(api_url) de la librería requests para traer la información 
-de un usuario falso de id=1 proporcionada por la API de jsonplacehorder, este método devuelve la información recibida 
-desde la API y se guarda en la variable response. Si la solicitud fue exitosa la petición retorna un status_code 
-de 2XX (Entre 200 y 299) y la información del usuario, pero si ocurrió algún error en el proceso retorna un 
-status_code de 4XX (Entre 400 y 499) y un mensaje con el motivo del error.
-
-En este ejemplo también se devuelve el name y el username de 2 maneras diferentes de obtener los datos de un json.
-
-Y finalmente se imprimen los headers y la url.
-
-> *CÓDIGOS DE ESTADO DE RESPUESTA HTTP*  
-enlace a los códigos de estado https://developer.mozilla.org/es/docs/Web/HTTP/Reference/Status
-
-# Vamos a hacer varios ejemplos con JSON para ver su forma en array y en objeto
-
-**PokeApi**
-
-Página web general con información de la API : https://pokeapi.co/
-
-Ejemplo de API con datos del pokemon ditto (devuelve diccionario) -> https://pokeapi.co/api/v2/pokemon/ditto
-
-**COVID**
-
-Página web general con información de la API : https://api.covidtracking.com
-
-Ejemplo de API con datos del covid (devuelve array) -> https://api.covidtracking.com/v1/us/daily.json
-
-
-## A continuación haremos unos ejemplos de GET, POST, PUT y DELETE
-
-**Ejemplo con la solicitud GET**
-
-Las solicitudes de tipo GET se utilizan para traer información de un servidor.
-
-    import requests
-
-    URL = "https://jsonplaceholder.typicode.com/posts/1"
-    response = requests.get(URL)
-
-    if response.status_code == 200:
-        data = response.json()
-
-        print('Solicitud exitosa')
-        print('Data:', data)
-        print('titulo -> ', data['title'])
-    else:
-        print('Error en la solicitud, detalles:', response.text)
-
-En este ejemplo, hacemos uso del método get(URL) de la librería requests para traer 
-la información de un post con id=1 simulado por la API de jsonplaceholder, esta información 
-será guardada en la variable response, luego con un condicional if else verificamos 
-si la petición a la API se realizó de forma correcta, de ser así mostramos la información 
-en la consola, de lo contrario imprimimos un mensaje con el error.
-
-**Ejemplo con error en la url de la petición GET**
-
-    import requests
-
-    URL = "https://jsonplaceholder.typicod.com/posts/1"
-    response = requests.get(URL)
-
-    if response.status_code == 200:
-        data = response.json()
-
-        print('Solicitud exitosa')
-        print('Data:', data)
-        print('titulo -> ', data['title'])
-    else:
-        print('Error en la solicitud, detalles:', response.text)
-
-En este ejemplo ponemos un URL incorrecta para que de error.
-
-**Ejemplo con la solicitud POST**
-
-Las solicitudes de tipo POST se utilizan para enviar datos al servidor.
-
-    import requests
-
-    URL = "https://jsonplaceholder.typicode.com/posts"
-    DATA = {
-        "title": "Título del ejemplo",
-        "body": "Contenido de un nuevo post",
-        "userId": 1
-    }
-
-    response = requests.post(URL, json=DATA)
-
-    if response.status_code == 201:
-        data = response.json()
-
-        print('Post creado de forma exitosa')
-        print('Respuesta:', data)
-    else:
-        print('Error en la solicitud, detalles:', response.text)
-
-En este ejemplo, hacemos uso del método post(URL, DATA) de la librería requests 
-para crear un nuevo objeto en el servidor, el método post(URL, DATA) recibe dos parámetros, 
-el primero es la URL de la API y el segundo es la información del objeto que 
-queremos crear dentro de un diccionario.
-
-> Nota : Los status codes para un método POST son típicamente 200 OK (si la solicitud fue exitosa y se procesó) 
-o 201 Created (si la solicitud resultó en la creación de un nuevo recurso). Otros códigos 
-comunes incluyen 400 Bad Request para un error en la solicitud o 404 Not Found si no se encuentra 
-el recurso, aunque este último es menos común en POST.
-
-**Ejemplo con la solicitud PUT (PATCH)**
-
-Las solicitudes de tipo PUT se utilizan para actualizar datos en el servidor.
-
-    import requests
-
-    URL = "https://jsonplaceholder.typicode.com/posts/1"
-    DATA = {
-        "title": "Título actualizado",
-        "userId": 2
-    }
-
-    response = requests.put(URL, json=DATA)
-
-    if response.status_code == 200:
-        data = response.json()
-
-        print('Post actualizado de forma exitosa')
-        print('Respuesta:', data)
-    else:
-        print('Error en la solicitud, detalles:', response.text)
-
-Para hacer una solicitud de tipo PUT debemos hacer uso del método put(URL, DATA) de la 
-librería de requests, este método también recibe dos parámetros, el primero es 
-la URL que le indica a la API el objeto en particular que deseas actualizar y 
-el segundo parámetro es la información con la que deseas actualizar el objeto.
-
-En este ejemplo accedemos al post con **id=1** y estamos modificando el **title** y el **userId**.
-
-> Nota : La diferencia principal entre PUT y PATCH es que
-PUT reemplaza completamente un recurso (debes enviar el objeto entero, aunque solo cambies un campo), mientras que PATCH aplica modificaciones parciales (solo envías los campos que quieres cambiar), lo cual es más eficiente para actualizaciones menores. PUT es una actualización "todo o nada", mientras que PATCH es una actualización selectiva o "parche".
-
-> Nota : Pero PATCH a veces da problemas con algunos navegadores y frameworks.
-
-**Ejemplo con la solicitud DELETE**
-
-Las solicitudes de tipo DELETE se utilizan para eliminar datos en el servidor.
-
-    import requests
-
-    URL = "https://jsonplaceholder.typicode.com/posts/1"
-    response = requests.delete(URL)
-
-    if response.status_code == 200:
-        print('Post eliminado de forma exitosa.')
-    else:
-        print('Error en la solicitud, detalles:', response.text)
-
-Para realizar una solicitud de tipo DELETE en Python debemos hacer uso del método 
-delete(url) de la librería requests, este método recibe como parámetro la URL que le 
-indica a el servidor de la API el objeto en particular que deseas eliminar, normalmente 
-las APIs retornan un mensaje que nos indica si el objeto se eliminó de forma correcta o 
-no pero la API de jsonplaceholder no retorna un mensaje en particular solo retorna un status_code de 200.
-
-En este ejemplo estamos borrando el post de **id=1**.
-
-### Conclusión
-
-Las APIs desempeñan un papel fundamental en la integración de aplicaciones y el intercambio 
-de datos en el mundo del desarrollo de software. En Python la librería **requests** nos permite 
-interactuar con las APIs de una forma sencilla e intuitiva, en este taller aprendimos como 
-hacer uso de esta librería para hacer peticiones HTTP y así obtener, crear, actualizar o eliminar información 
-en una API, ahora ya estás listo/a para consumir una API de forma correcta y hacer uso de sus funcionalidades 
-en tus propias aplicaciones.
-
-### Enlaces de interés
-
-1.- Artículo de 4geeks en el cual me he basado.
-
-https://4geeks.com/es/how-to/como-consumir-una-api-en-python
-
-2.- Este video te enseña a consumir una API usando la librería requests en Python. Video de 2:26 minutos de Juan Esquivel Méndez
-
-https://www.youtube.com/watch?v=AYaVr6Z-VoI
-
-3.- Este video te introduce a como usar FastApi.
-
-https://www.youtube.com/watch?v=J0y2tjBz2Ao
-
-4.- request para humanos
-
-https://requests.readthedocs.io/projects/es/es/latest/user/quickstart.html
-
-
+</div>
+# cat_api
